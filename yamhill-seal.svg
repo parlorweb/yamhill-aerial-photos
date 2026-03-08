@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 220">
+  <defs>
+    <clipPath id="sealClip">
+      <circle cx="110" cy="110" r="99"/>
+    </clipPath>
+  </defs>
+
+  <!-- Clipped interior artwork -->
+  <g clip-path="url(#sealClip)">
+
+    <!-- Teal sky background -->
+    <rect x="8" y="8" width="204" height="135" fill="#1a6b5a"/>
+
+    <!-- Blue water band -->
+    <path d="M8,96 Q45,87 78,95 Q108,103 138,92 Q165,83 212,91
+             L212,118 Q180,109 148,117 Q114,125 82,116 Q48,107 8,114 Z"
+          fill="#2a8fcc"/>
+
+    <!-- Dark green hills - back -->
+    <path d="M8,102 Q28,76 58,84 Q84,91 106,72 Q124,56 150,70
+             Q170,80 195,64 Q207,57 212,62
+             L212,102 Q185,91 158,100 Q130,108 106,93
+             Q82,78 56,91 Q32,100 8,102 Z"
+          fill="#2d6e2d"/>
+
+    <!-- Bright green hills - front -->
+    <path d="M8,113 Q34,91 62,100 Q88,109 112,89 Q132,72 158,86
+             Q178,97 212,83
+             L212,115 Q180,103 158,112 Q130,121 108,104
+             Q84,87 58,102 Q30,114 8,116 Z"
+          fill="#4fa830"/>
+
+    <!-- Gold/yellow land -->
+    <path d="M8,113 Q52,105 92,113 Q132,121 174,109 L212,112 L212,138 L8,138 Z"
+          fill="#d4ac0a"/>
+
+    <!-- Bird - dark navy silhouette, stylized heron/egret -->
+    <!-- Positioned center-left, flying right -->
+    <g transform="translate(65,42)">
+      <!-- Body elongated -->
+      <ellipse cx="52" cy="32" rx="20" ry="9" fill="#1a2f4a" transform="rotate(-8,52,32)"/>
+      <!-- Neck curve -->
+      <path d="M60,26 Q64,18 68,12 Q71,7 74,9 Q77,13 72,19 Q67,24 62,27 Z" fill="#1a2f4a"/>
+      <!-- Head -->
+      <ellipse cx="74" cy="9" rx="6" ry="5" fill="#1a2f4a"/>
+      <!-- Beak - long and pointed -->
+      <path d="M78,7 L96,4 L79,11 Z" fill="#1a2f4a"/>
+      <!-- Eye -->
+      <circle cx="75" cy="8" r="1.2" fill="#8ab8d0"/>
+      <!-- Primary wing - large sweep upward-left -->
+      <path d="M42,28 Q22,14 4,19 Q-4,22 -1,28 Q10,25 22,30 Q34,35 42,32 Z" fill="#1a6b5a"/>
+      <!-- Secondary wing sweep -->
+      <path d="M38,34 Q18,40 3,52 Q-2,57 5,56 Q19,49 34,44 Q44,40 40,36 Z" fill="#236e30"/>
+      <!-- Tail -->
+      <path d="M33,37 Q42,48 46,62 Q46,68 41,65 Q38,54 31,44 Q28,40 31,37 Z" fill="#1a2f4a"/>
+      <path d="M36,38 Q48,52 52,66 Q53,72 47,68 Q44,56 38,46 Q35,41 36,38 Z" fill="#1a2f4a"/>
+    </g>
+
+    <!-- White bottom half for text area -->
+    <rect x="8" y="138" width="204" height="74" fill="none"/>
+  </g>
+
+  <!-- Outer double ring - WHITE for dark bg compatibility -->
+  <circle cx="110" cy="110" r="106" fill="none" stroke="rgba(255,255,255,0.95)" stroke-width="3.5"/>
+  <circle cx="110" cy="110" r="100" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.2"/>
+
+  <!-- 1843 at top -->
+  <text x="110" y="35" text-anchor="middle"
+        font-family="Georgia, 'Times New Roman', serif"
+        font-size="14" font-weight="bold"
+        fill="white" letter-spacing="3">1843</text>
+
+  <!-- Year flanking lines -->
+  <line x1="66" y1="31" x2="85" y2="31" stroke="rgba(255,255,255,0.7)" stroke-width="1"/>
+  <line x1="135" y1="31" x2="154" y2="31" stroke="rgba(255,255,255,0.7)" stroke-width="1"/>
+
+  <!-- Separator lines above YAMHILL -->
+  <line x1="36" y1="147" x2="184" y2="147" stroke="rgba(255,255,255,0.8)" stroke-width="1.2"/>
+  <line x1="36" y1="150.5" x2="184" y2="150.5" stroke="rgba(255,255,255,0.4)" stroke-width="0.7"/>
+
+  <!-- YAMHILL text -->
+  <text x="110" y="168" text-anchor="middle"
+        font-family="'Arial Black', Arial, Helvetica, sans-serif"
+        font-size="20" font-weight="900"
+        fill="white" letter-spacing="4">YAMHILL</text>
+
+  <!-- COUNTY text -->
+  <text x="110" y="190" text-anchor="middle"
+        font-family="'Arial Black', Arial, Helvetica, sans-serif"
+        font-size="20" font-weight="900"
+        fill="white" letter-spacing="4">COUNTY</text>
+</svg>
