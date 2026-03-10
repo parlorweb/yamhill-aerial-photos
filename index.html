@@ -817,8 +817,8 @@ function openSectionModal(sec){
         if (smCurrentSec === sec) { initSmView(waitImg); }
       };
     }
-  } else {
-    /* No real photo — use demo high-res as fallback */
+  } else if (info.scanned) {
+    /* Scanned but no real photo yet — show demo as placeholder */
     var demoUrl='photos/demo/demo-high.jpg';
     var demoImg=realImgCache[demoUrl];
     if(demoImg && demoImg.complete && demoImg.naturalWidth>0){
@@ -828,6 +828,9 @@ function openSectionModal(sec){
       var di=demoImg||(function(){var i=new Image();i.src=demoUrl;realImgCache[demoUrl]=i;return i;})();
       di.onload=function(){realImgCache[demoUrl]=di;if(smCurrentSec===sec) initSmView(di);};
     }
+  } else {
+    /* Pending — no image, show procedural tile */
+    initSmView(null);
   }
 }
 
