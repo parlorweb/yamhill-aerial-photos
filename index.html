@@ -818,9 +818,16 @@ function openSectionModal(sec){
       };
     }
   } else {
-    /* No real photo — use map placeholder if available, else procedural tile */
-    if(mapPlaceholderReady) initSmView(mapPlaceholder);
-    else initSmView(null);
+    /* No real photo — use demo high-res as fallback */
+    var demoUrl='photos/demo/demo-high.jpg';
+    var demoImg=realImgCache[demoUrl];
+    if(demoImg && demoImg.complete && demoImg.naturalWidth>0){
+      initSmView(demoImg);
+    } else {
+      initSmView(null);
+      var di=demoImg||(function(){var i=new Image();i.src=demoUrl;realImgCache[demoUrl]=i;return i;})();
+      di.onload=function(){realImgCache[demoUrl]=di;if(smCurrentSec===sec) initSmView(di);};
+    }
   }
 }
 
