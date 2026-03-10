@@ -452,6 +452,19 @@ function isInCounty(ti,ri,secNum){
   var rngNum=RANGES[ri].match(/\d+/)[0];
   return COUNTY_SET.has('T'+twpNum+'R'+rngNum+'S'+secNum);
 }
+/* Cache: how many in-county sections per township-range block */
+var blockCountCache=null;
+function blockInCountyCount(ti,ri){
+  if(!countyLoaded) return 36;
+  if(!blockCountCache){
+    blockCountCache=[];
+    for(var t=0;t<nTwp;t++){blockCountCache[t]=[];for(var r=0;r<nRng;r++){
+      var c=0;for(var s=1;s<=36;s++) if(isInCounty(t,r,s)) c++;
+      blockCountCache[t][r]=c;
+    }}
+  }
+  return blockCountCache[ti][ri];
+}
 
 /* ── TILE RENDERER ── */
 var tileCache={};
@@ -559,11 +572,12 @@ function draw(){
     var twy=ti*TWP_PX;if(twy>wB||twy+TWP_PX<wT) continue;
     for(var ri2=0;ri2<nRng;ri2++){
       var twx=ri2*TWP_PX;if(twx>wR||twx+TWP_PX<wL) continue;
+      if(blockInCountyCount(ti,ri2)===0) continue;
       for(var row=0;row<nSec;row++){
         for(var col=0;col<nSec;col++){
           var sn=SEC_LAYOUT[row][col],sx2=twx+col*SEC_PX,sy2=twy+row*SEC_PX;
           if(sx2>wR||sx2+SEC_PX<wL||sy2>wB||sy2+SEC_PX<wT) continue;
-          if(!isInCounty(ti,ri2,sn)) continue;
+          if(!isInCounty(ti,ri2,sn)){ctx2.strokeStyle='rgba(40,32,20,0.2)';ctx2.lineWidth=0.4/sc;ctx2.strokeRect(sx2,sy2,SEC_PX,SEC_PX);continue;}
           var info=sections[ti][ri2][sn];
           if(info.scanned){
             var ssp2=SEC_PX*sc;
@@ -804,7 +818,9 @@ function openSectionModal(sec){
       };
     }
   } else {
-    initSmView(null);
+    /* No real photo — use map placeholder if available, else procedural tile */
+    if(mapPlaceholderReady) initSmView(mapPlaceholder);
+    else initSmView(null);
   }
 }
 
@@ -1469,6 +1485,11 @@ function resize(){
         img.onload = function() { realImgCache[entry.lo] = img; draw(); };
         realImgCache[entry.lo] = img;
       }
+      if (entry.hi) {
+        var imgHi = new Image(); imgHi.src = entry.hi;
+        imgHi.onload = function() { realImgCache[entry.hi] = imgHi; };
+        realImgCache[entry.hi] = imgHi;
+      }
     });
   }).catch(function() { /* no manifest or offline — procedural tiles */ });
 })();
@@ -1487,6 +1508,7 @@ function resize(){
       for(var i=0;i<secs.length;i++) COUNTY_SET.add(key+'S'+secs[i]);
     }
     countyLoaded=true;
+    blockCountCache=null;
     buildGalleryPhotos();
     updateStats();
     draw();

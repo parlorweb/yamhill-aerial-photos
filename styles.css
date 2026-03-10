@@ -190,8 +190,8 @@ body{background:var(--ink);font-family:'Courier Prime',monospace;color:var(--pal
 .sm-nav-photo{position:absolute;z-index:6;}
 #smNavLeft  {left:8px;  top:50%;transform:translateY(-50%);}
 #smNavRight {right:8px; top:50%;transform:translateY(-50%);}
-#smNavUp    {top:8px;   left:50%;transform:translateX(-50%);}
-#smNavDown  {bottom:34px;left:50%;transform:translateX(-50%);}
+#smNavUp    {top:26px;  left:50%;transform:translateX(-50%);}
+#smNavDown  {bottom:48px;left:50%;transform:translateX(-50%);}
 #smTitle{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--cream);}
 #smSub{font-family:'IM Fell English',serif;font-style:italic;color:var(--parchment);font-size:0.8rem;margin-top:0.12rem;}
 #smStatus{font-size:0.65rem;margin-top:0.25rem;letter-spacing:0.1em;}
@@ -207,13 +207,13 @@ body{background:var(--ink);font-family:'Courier Prime',monospace;color:var(--pal
 #smCanvas{width:100%;height:100%;display:block;}
 #smFilmTop,#smFilmBot{position:absolute;left:0;right:0;display:flex;justify-content:space-between;
   padding:3px 10px;background:rgba(0,0,0,0.55);font-size:0.58rem;
-  font-family:'Courier Prime',monospace;color:rgba(230,200,140,0.75);letter-spacing:0.12em;pointer-events:none;}
+  font-family:'Courier Prime',monospace;color:rgba(230,200,140,0.75);letter-spacing:0.12em;pointer-events:none;z-index:7;}
 #smFilmTop{top:0;}#smFilmBot{bottom:0;}
 #smZoomHint{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);
   font-size:0.58rem;letter-spacing:0.15em;color:rgba(200,170,120,0.5);
   pointer-events:none;white-space:nowrap;}
 /* Zoom overlay buttons */
-#smZoomOverlay{position:absolute;top:8px;right:8px;display:flex;gap:4px;z-index:5;}
+#smZoomOverlay{position:absolute;top:26px;right:8px;display:flex;gap:4px;z-index:5;}
 .sm-ov-btn{width:38px;height:38px;background:rgba(14,11,6,0.82);border:1px solid rgba(175,145,95,0.55);
   color:var(--parchment);font-size:1.1rem;font-family:monospace;cursor:pointer;
   display:flex;align-items:center;justify-content:center;touch-action:manipulation;
