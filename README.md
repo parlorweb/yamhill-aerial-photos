@@ -1,6 +1,6 @@
 # Yamhill County Aerial Survey Archive — 1948
 
-An interactive single-file web application for browsing a simulated historical aerial photography archive of Yamhill County, Oregon.
+An interactive web application for browsing a simulated historical aerial photography archive of Yamhill County, Oregon.
 
 ## Features
 
@@ -8,14 +8,23 @@ An interactive single-file web application for browsing a simulated historical a
 - **Photo Gallery** — Browse, filter, and download all generated survey photographs. Toggle between grid and list views. Filter by Township, Range, or Section number.
 - **Film-Style UI** — Authentic period-appropriate aesthetic with Playfair Display / Courier Prime typography, parchment/ink color palette, and filmstrip overlays.
 - **Procedural Aerial Rendering** — All photographs are generated at runtime via HTML5 Canvas using a seeded random algorithm — no external images required.
-- **Fully Offline** — Single `.html` file, no server needed. Only loads Google Fonts from a CDN.
+- **Fully Offline** — No server needed. Only loads Google Fonts and jsPDF from CDNs.
+
+## Project Structure
+
+| File | Description |
+|---|---|
+| `index.html` | Main HTML with embedded JavaScript |
+| `styles.css` | All CSS styles |
+| `yamhill-seal.svg` | Yamhill County seal graphic |
+| `headerlogo.png` | Header logo image |
 
 ## Usage
 
-Open `yamhill-unified-v1_1.html` in any modern browser. No build step, no dependencies, no backend.
+Open `index.html` in any modern browser. No build step, no backend.
 
 ```bash
-open yamhill-unified-v1_1.html
+open index.html
 # or
 python3 -m http.server 8080   # then visit http://localhost:8080
 ```
