@@ -1,1 +1,6 @@
-[]
+[
+  {"twp":"T3S","rng":"R4W","sec":14,"lo":"photos/demo/demo-low.jpg","hi":"photos/demo/demo-high.jpg"},
+  {"twp":"T3S","rng":"R4W","sec":15,"lo":"photos/demo/demo-low.jpg","hi":"photos/demo/demo-high.jpg"},
+  {"twp":"T3S","rng":"R4W","sec":22,"lo":"photos/demo/demo-low.jpg","hi":"photos/demo/demo-high.jpg"},
+  {"twp":"T3S","rng":"R4W","sec":23,"lo":"photos/demo/demo-low.jpg","hi":"photos/demo/demo-high.jpg"}
+]
