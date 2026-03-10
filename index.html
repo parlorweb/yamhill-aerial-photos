@@ -50,7 +50,7 @@
     <div class="intro-divider"></div>
     <p class="intro-desc">
       A comprehensive aerial photographic survey of Yamhill County, Oregon, conducted in the summer of 1948.
-      Coverage spans Townships 1S through 7S and Ranges 2W through 6W, Willamette Meridian —
+      Coverage spans Townships 2S through 6S and Ranges 1W through 9W, Willamette Meridian —
       documenting farmsteads, timberlands, and rural landscapes of the northern Willamette Valley
       at the moment before post-war development transformed the region.
     </p>
@@ -75,7 +75,7 @@
       <div class="intro-stat"><div class="intro-stat-n" id="iStatTotal">—</div><div class="intro-stat-l">Total Sections</div></div>
       <div class="intro-stat"><div class="intro-stat-n" id="iStatScanned">—</div><div class="intro-stat-l">Scanned</div></div>
       <div class="intro-stat"><div class="intro-stat-n" id="iStatPending">—</div><div class="intro-stat-l">Pending</div></div>
-      <div class="intro-stat"><div class="intro-stat-n">5</div><div class="intro-stat-l">Townships × Ranges</div></div>
+      <div class="intro-stat"><div class="intro-stat-n">5 × 9</div><div class="intro-stat-l">Townships × Ranges</div></div>
     </div>
   </div>
 </div>
@@ -113,19 +113,20 @@
         <span class="smod-lbl">Township</span>
         <select id="fTwp" class="smod-select">
           <option value="">— Select —</option>
-          <option value="T1S">T1S</option><option value="T2S">T2S</option>
-          <option value="T3S">T3S</option><option value="T4S">T4S</option>
-          <option value="T5S">T5S</option><option value="T6S">T6S</option>
-          <option value="T7S">T7S</option>
+          <option value="T2S">T2S</option><option value="T3S">T3S</option>
+          <option value="T4S">T4S</option><option value="T5S">T5S</option>
+          <option value="T6S">T6S</option>
         </select>
       </div>
       <div class="smod-field">
         <span class="smod-lbl">Range</span>
         <select id="fRng" class="smod-select">
           <option value="">— Select —</option>
-          <option value="R2W">R2W</option><option value="R3W">R3W</option>
-          <option value="R4W">R4W</option><option value="R5W">R5W</option>
-          <option value="R6W">R6W</option>
+          <option value="R1W">R1W</option><option value="R2W">R2W</option>
+          <option value="R3W">R3W</option><option value="R4W">R4W</option>
+          <option value="R5W">R5W</option><option value="R6W">R6W</option>
+          <option value="R7W">R7W</option><option value="R8W">R8W</option>
+          <option value="R9W">R9W</option>
         </select>
       </div>
       <div class="smod-field">
@@ -220,19 +221,20 @@
           <label class="g-lbl" for="gsTwp">Township</label>
           <select class="g-sel" id="gsTwp">
             <option value="">— All Townships —</option>
-            <option value="T1S">T1S</option><option value="T2S">T2S</option>
-            <option value="T3S">T3S</option><option value="T4S">T4S</option>
-            <option value="T5S">T5S</option><option value="T6S">T6S</option>
-            <option value="T7S">T7S</option>
+            <option value="T2S">T2S</option><option value="T3S">T3S</option>
+            <option value="T4S">T4S</option><option value="T5S">T5S</option>
+            <option value="T6S">T6S</option>
           </select>
         </div>
         <div class="g-fg">
           <label class="g-lbl" for="gsRng">Range</label>
           <select class="g-sel" id="gsRng">
             <option value="">— All Ranges —</option>
-            <option value="R2W">R2W</option><option value="R3W">R3W</option>
-            <option value="R4W">R4W</option><option value="R5W">R5W</option>
-            <option value="R6W">R6W</option>
+            <option value="R1W">R1W</option><option value="R2W">R2W</option>
+            <option value="R3W">R3W</option><option value="R4W">R4W</option>
+            <option value="R5W">R5W</option><option value="R6W">R6W</option>
+            <option value="R7W">R7W</option><option value="R8W">R8W</option>
+            <option value="R9W">R9W</option>
           </select>
         </div>
         <div class="g-fg">
@@ -405,8 +407,8 @@ function hash(str){
 }
 
 /* ── PLSS ── */
-var TOWNSHIPS=['T1S','T2S','T3S','T4S','T5S','T6S','T7S'];
-var RANGES=['R6W','R5W','R4W','R3W','R2W'];
+var TOWNSHIPS=['T2S','T3S','T4S','T5S','T6S'];
+var RANGES=['R9W','R8W','R7W','R6W','R5W','R4W','R3W','R2W','R1W'];
 var SEC_LAYOUT=[
   [6,5,4,3,2,1],
   [7,8,9,10,11,12],
@@ -439,6 +441,16 @@ for(var ti=0;ti<nTwp;ti++){
       };
     }
   }
+}
+
+/* ── COUNTY BOUNDARY (PLSS) ── */
+var COUNTY_SET=null;  /* Set of "T{t}R{r}S{s}" strings for in-county sections */
+var countyLoaded=false;
+function isInCounty(ti,ri,secNum){
+  if(!countyLoaded) return true; /* graceful fallback */
+  var twpNum=TOWNSHIPS[ti].match(/\d+/)[0];
+  var rngNum=RANGES[ri].match(/\d+/)[0];
+  return COUNTY_SET.has('T'+twpNum+'R'+rngNum+'S'+secNum);
 }
 
 /* ── TILE RENDERER ── */
@@ -551,6 +563,7 @@ function draw(){
         for(var col=0;col<nSec;col++){
           var sn=SEC_LAYOUT[row][col],sx2=twx+col*SEC_PX,sy2=twy+row*SEC_PX;
           if(sx2>wR||sx2+SEC_PX<wL||sy2>wB||sy2+SEC_PX<wT) continue;
+          if(!isInCounty(ti,ri2,sn)) continue;
           var info=sections[ti][ri2][sn];
           if(info.scanned){
             var ssp2=SEC_PX*sc;
@@ -644,7 +657,9 @@ function worldToSection(wx,wy){
   if(ti<0||ti>=nTwp||ri2<0||ri2>=nRng) return null;
   var lx=wx-ri2*TWP_PX,ly=wy-ti*TWP_PX,col=Math.floor(lx/SEC_PX),row=Math.floor(ly/SEC_PX);
   if(col<0||col>=6||row<0||row>=6) return null;
-  return{ti:ti,ri2:ri2,secNum:SEC_LAYOUT[row][col],col:col,row:row,info:sections[ti][ri2][SEC_LAYOUT[row][col]]};
+  var sn=SEC_LAYOUT[row][col];
+  if(!isInCounty(ti,ri2,sn)) return null;
+  return{ti:ti,ri2:ri2,secNum:sn,col:col,row:row,info:sections[ti][ri2][sn]};
 }
 function screenToWorld(sx,sy){var r=mapCanvas.getBoundingClientRect();return{x:vp.x+(sx-r.left)/vp.scale,y:vp.y+(sy-r.top)/vp.scale};}
 
@@ -1005,6 +1020,7 @@ function openFromHash(hash) {
   if (ti < 0 || ri2 < 0) return;
   var info = sections[ti] && sections[ti][ri2] && sections[ti][ri2][secNum];
   if (!info) return;
+  if (!isInCounty(ti, ri2, secNum)) return;
   // Find row/col for this section number
   var row = -1, col = -1;
   for (var r = 0; r < SEC_LAYOUT.length; r++) {
@@ -1057,6 +1073,7 @@ function navigateSec(dCol, dRow) {
   if (newTi < 0 || newTi >= nTwp || newRi2 < 0 || newRi2 >= nRng) return;
 
   var secNum = SEC_LAYOUT[newRow][newCol];
+  if (!isInCounty(newTi, newRi2, secNum)) return;
   var sec = { ti:newTi, ri2:newRi2, row:newRow, col:newCol,
               secNum:secNum, info:sections[newTi][newRi2][secNum] };
   highlight = { wx: newRi2*TWP_PX + newCol*SEC_PX, wy: newTi*TWP_PX + newRow*SEC_PX };
@@ -1386,6 +1403,7 @@ document.getElementById('btnFind').addEventListener('click',function(){
   var ri2=rngVal?RANGES.indexOf(rngVal):-1;
   if(ti>=0&&ri2>=0){
     if(secVal&&secVal>=1&&secVal<=36){
+      if(!isInCounty(ti,ri2,secVal)){toast.textContent='Section '+secVal+' is outside Yamhill County';return;}
       var row=-1,col=-1;
       for(var r=0;r<6;r++) for(var c=0;c<6;c++) if(SEC_LAYOUT[r][c]===secVal){row=r;col=c;}
       if(row<0){toast.textContent='Invalid section number';return;}
@@ -1454,6 +1472,27 @@ function resize(){
     });
   }).catch(function() { /* no manifest or offline — procedural tiles */ });
 })();
+
+/* ── PLSS COUNTY BOUNDARY LOADER ── */
+(function loadPLSS(){
+  fetch('plss-sections.json').then(function(r){
+    if(!r.ok) throw new Error('PLSS not found');
+    return r.json();
+  }).then(function(data){
+    COUNTY_SET=new Set();
+    var ic=data.inCounty;
+    for(var key in ic){
+      if(!ic.hasOwnProperty(key)) continue;
+      var secs=ic[key];
+      for(var i=0;i<secs.length;i++) COUNTY_SET.add(key+'S'+secs[i]);
+    }
+    countyLoaded=true;
+    buildGalleryPhotos();
+    updateStats();
+    draw();
+    gDoSearch();
+  }).catch(function(e){console.warn('PLSS boundary data not loaded:',e);});
+})();
 /* ═══════════════════════════════════════════════
    GALLERY
 ═══════════════════════════════════════════════ */
@@ -1517,37 +1556,47 @@ function renderAerial(canvas, seed, W, H) {
 }
 
 /* Gallery data */
-var GTWP=['T1S','T2S','T3S','T4S','T5S','T6S','T7S'];
-var GRNG=['R2W','R3W','R4W','R5W','R6W'];
+var GTWP=TOWNSHIPS;
+var GRNG=RANGES;
 var GMNTH=['May','June','July','August'];
 var GSTAT=['Scanned','Scanned','Scanned','Processing','Pending'];
 var GRES=['600 DPI','800 DPI','1200 DPI'];
 var gPhotos=[];
-var gUsedKeys={};
-for(var gti=0;gti<GTWP.length;gti++){
-  for(var gri=0;gri<GRNG.length;gri++){
-    var grng0=mkRng(hash(GTWP[gti]+GRNG[gri]));
-    var gn=Math.floor(grng0()*7)+4;
-    for(var gsi=0;gsi<gn;gsi++){
-      var gsec;var gattempts=0;
-      do{gsec=Math.floor(grng0()*36)+1;gattempts++;}while(gUsedKeys[gti+'-'+gri+'-'+gsec]&&gattempts<50);
-      gUsedKeys[gti+'-'+gri+'-'+gsec]=true;
-      var gseed=hash(GTWP[gti]+GRNG[gri]+gsec);
-      var grng1=mkRng(gseed+7);
-      gPhotos.push({id:gPhotos.length+1,twp:GTWP[gti],rng:GRNG[gri],sec:gsec,seed:gseed,
-        date:GMNTH[Math.floor(grng1()*4)]+' 1948',roll:'YC-'+String(gti*5+gri+1).padStart(2,'0'),
-        frame:String(Math.floor(grng1()*49)+1).padStart(3,'0'),
-        stat:GSTAT[Math.floor(grng1()*5)],res:GRES[Math.floor(grng1()*3)]});
+function buildGalleryPhotos(){
+  gPhotos=[];
+  var gUsedKeys={};
+  for(var gti=0;gti<GTWP.length;gti++){
+    for(var gri=0;gri<GRNG.length;gri++){
+      var grng0=mkRng(hash(GTWP[gti]+GRNG[gri]));
+      var gn=Math.floor(grng0()*7)+4;
+      for(var gsi=0;gsi<gn;gsi++){
+        var gsec;var gattempts=0;
+        do{gsec=Math.floor(grng0()*36)+1;gattempts++;}while((gUsedKeys[gti+'-'+gri+'-'+gsec]||!isInCounty(gti,gri,gsec))&&gattempts<50);
+        if(!isInCounty(gti,gri,gsec)) continue;
+        gUsedKeys[gti+'-'+gri+'-'+gsec]=true;
+        var gseed=hash(GTWP[gti]+GRNG[gri]+gsec);
+        var grng1=mkRng(gseed+7);
+        gPhotos.push({id:gPhotos.length+1,twp:GTWP[gti],rng:GRNG[gri],sec:gsec,seed:gseed,
+          date:GMNTH[Math.floor(grng1()*4)]+' 1948',roll:'YC-'+String(gti*5+gri+1).padStart(2,'0'),
+          frame:String(Math.floor(grng1()*49)+1).padStart(3,'0'),
+          stat:GSTAT[Math.floor(grng1()*5)],res:GRES[Math.floor(grng1()*3)]});
+      }
     }
   }
 }
+buildGalleryPhotos();
 
 /* Update intro stats */
-var gTotal=7*5*36;
-var gScanned=gPhotos.filter(function(p){return p.stat==='Scanned';}).length;
-document.getElementById('iStatTotal').textContent=gTotal;
-document.getElementById('iStatScanned').textContent=gScanned;
-document.getElementById('iStatPending').textContent=gTotal-gScanned;
+function updateStats(){
+  var total=0,scanned=0;
+  for(var sti=0;sti<nTwp;sti++) for(var sri=0;sri<nRng;sri++) for(var ss=1;ss<=36;ss++){
+    if(isInCounty(sti,sri,ss)){total++;if(sections[sti][sri][ss].scanned) scanned++;}
+  }
+  document.getElementById('iStatTotal').textContent=total;
+  document.getElementById('iStatScanned').textContent=scanned;
+  document.getElementById('iStatPending').textContent=total-scanned;
+}
+updateStats();
 
 var gCurrentView='grid';
 var gCurrentResults=gPhotos.slice();
